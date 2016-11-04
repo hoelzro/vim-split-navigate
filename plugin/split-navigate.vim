@@ -73,8 +73,8 @@ endtry
 
 nnoremap <silent> <Space> :call BinarySeek()<CR>
 
-highlight TopHighlight term=bold ctermfg=252 ctermbg=18 guifg=fg guibg=#000080
-highlight BottomHighlight term=standout ctermfg=186 ctermbg=88 guifg=#d0d090 guibg=#800000
+highlight default TopHighlight term=bold ctermfg=252 ctermbg=18 guifg=fg guibg=#000080
+highlight default BottomHighlight term=standout ctermfg=186 ctermbg=88 guifg=#d0d090 guibg=#800000
 
 function! OverrideJK(cmd)
   if v:count == 0
