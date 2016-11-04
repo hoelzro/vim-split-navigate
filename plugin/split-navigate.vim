@@ -76,22 +76,6 @@ nnoremap <silent> <Space> :call BinarySeek()<CR>
 highlight default TopHighlight term=bold ctermfg=252 ctermbg=18 guifg=fg guibg=#000080
 highlight default BottomHighlight term=standout ctermfg=186 ctermbg=88 guifg=#d0d090 guibg=#800000
 
-function! OverrideJK(cmd)
-  if v:count == 0
-    return a:cmd
-  endif
-
-  let time = reltime()
-  if (time[1] % 5) != 0
-    return a:cmd
-  endif
-  echomsg 'Use split seek to do it'
-  return "\u0020"
-endfunction
-
-nmap <silent> <expr> j OverrideJK('j')
-nmap <silent> <expr> k OverrideJK('k')
-
 " XXX Caveats:
 "   - Doesn't really work with folds
 "   - Uses <Space>/j/k
