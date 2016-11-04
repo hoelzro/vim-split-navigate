@@ -1,3 +1,15 @@
+" set default value if unset
+if ! exists("g:splitnavigate_default_mappings")
+  let g:splitnavigate_default_mappings = 1
+endif
+
+function! g:SplitnavigateLower()
+  call <SID>SelectLower()
+endfunction
+function! g:SplitnavigateUpper()
+  call <SID>SelectUpper()
+endfunction
+
 function! s:SelectLower()
   let middle = <SID>GetMiddle()
   let b:binary_top = middle + 1
@@ -21,9 +33,11 @@ function! s:ResetSeekBindings()
   call matchdelete(b:binary_matches[1])
   unlet b:binary_matches
 
-  unmap <buffer> j
-  unmap <buffer> k
-  unmap <buffer> <Esc>
+  if g:splitnavigate_default_mappings
+    unmap <buffer> j
+    unmap <buffer> k
+    unmap <buffer> <Esc>
+  endif
 endfunction
 
 function! s:GetMiddle()
@@ -66,17 +80,17 @@ function! BinarySeek()
   call <SID>Refresh()
 endfunction
 
-try
-  unmap <Space>
-catch
-endtry
+if g:splitnavigate_default_mappings
+  try
+    unmap <Space>
+  catch
+  endtry
 
-nnoremap <silent> <Space> :call BinarySeek()<CR>
+  nnoremap <silent> <Space> :call BinarySeek()<CR>
+endif
 
 highlight default TopHighlight term=bold ctermfg=252 ctermbg=18 guifg=fg guibg=#000080
 highlight default BottomHighlight term=standout ctermfg=186 ctermbg=88 guifg=#d0d090 guibg=#800000
 
 " XXX Caveats:
 "   - Doesn't really work with folds
-"   - Uses <Space>/j/k
-"   - colors are hardcoded

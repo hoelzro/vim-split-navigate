@@ -29,6 +29,24 @@ pressing `j`/`k` until you're reached the line you want.
 
 You can press `Escape` at any time to cancel split navigation.
 
+# Changing key bindings
+
+Use for example the following in your `.vimrc`:
+```vimL
+
+" disable default bindings
+let g:splitnavigate_default_mappings = 0
+
+" use `ss` to start the search
+nnoremap <silent> <leader>s :call BinarySeek()<CR>
+
+" uses `su` to select the upper half
+map <buffer> <silent> <leader>k :call SplitnavigateUpper()<CR>
+
+" uses `sl` to select the lower half
+map <buffer> <silent> <leader>j :call SplitnavigateLower()<CR>
+```
+
 # Custom Highlight Colors
 
 These are the default colors used:
@@ -53,4 +71,3 @@ Here are some of the compromises I made while writing this plugin; I will addres
 them in the future if it takes off.
 
   - This plugin doesn't currently play well with folds.  It *can*, but it would take some effort and I want to make sure it's useful before I add that.
-  - The keybindings (Space, j, k) are hardcoded.  I tend to dislike it when plugins choose keybindings for me, but this will at least allow users to quickly and easily try the plugin.
