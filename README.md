@@ -29,6 +29,24 @@ pressing `j`/`k` until you're reached the line you want.
 
 You can press `Escape` at any time to cancel split navigation.
 
+# Custom Highlight Colors
+
+These are the default colors used:
+```vimL
+"default white on blue
+highlight default TopHighlight term=bold ctermfg=252 ctermbg=18 guifg=fg guibg=#000080
+" default yellow on red
+highlight default BottomHighlight term=standout ctermfg=186 ctermbg=88 guifg=#d0d090 guibg=#800000
+```
+
+Use the following color groups to set custom colors:
+```vimL
+" custom blue on white (terminal only)
+highlight TopHighlight term=bold ctermfg=18 ctermbg=252
+" custom red on white (terminal only)
+highlight BottomHighlight term=bold ctermfg=88 ctermbg=252
+```
+
 # Caveats
 
 Here are some of the compromises I made while writing this plugin; I will address
@@ -36,4 +54,3 @@ them in the future if it takes off.
 
   - This plugin doesn't currently play well with folds.  It *can*, but it would take some effort and I want to make sure it's useful before I add that.
   - The keybindings (Space, j, k) are hardcoded.  I tend to dislike it when plugins choose keybindings for me, but this will at least allow users to quickly and easily try the plugin.
-  - The colors for the halves are hardcoded as red and blue.
