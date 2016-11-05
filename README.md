@@ -35,6 +35,8 @@ The default keys (`<Space>` for start, `k` for up, `j` for down and `<Esc>` for 
 
 The keybindings for up, down and abort are only mapped while search is active (buffer-local). These are `unmap`ped when search is aborted
 
+Any `{lhs}` should be valid. (see `:help map-which-keys`, though this was not thoroughly tested)
+
 You can use the following example to get started:
 ```vimL
 
