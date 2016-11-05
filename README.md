@@ -31,20 +31,21 @@ You can press `Escape` at any time to cancel split navigation.
 
 # Changing key bindings
 
-Use for example the following in your `.vimrc`:
+The default keys (`<Space>` for start, `k` for up, `j` for down and `<Esc>` for abort) can be overridden on a per-key basis.
+
+The keybindings for up, down and abort are only mapped while search is active (buffer-local). These are `unmap`ped when search is aborted
+
+You can use the following example to get started:
 ```vimL
 
-" disable default bindings
-let g:splitnavigate_default_mappings = 0
-
-" use `ss` to start the search
-nnoremap <silent> <leader>s :call BinarySeek()<CR>
-
-" uses `su` to select the upper half
-map <buffer> <silent> <leader>k :call SplitnavigateUpper()<CR>
-
-" uses `sl` to select the lower half
-map <buffer> <silent> <leader>j :call SplitnavigateLower()<CR>
+" start search with `leader+s`
+let g:splitnavigate_start_key = "<leader>s"
+" choose upper half with `u`
+let g:splitnavigate_up_key = "u"
+" choose lower half with `d`
+let g:splitnavigate_down_key = "d"
+" stop searching with `q`
+let g:splitnavigate_abort_key = "q"
 ```
 
 # Custom Highlight Colors

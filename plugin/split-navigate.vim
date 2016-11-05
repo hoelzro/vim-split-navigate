@@ -1,14 +1,16 @@
-" set default value if unset
-if ! exists("g:splitnavigate_default_mappings")
-  let g:splitnavigate_default_mappings = 1
+" set default values if unset
+if ! exists("g:splitnavigate_start_key")
+  let g:splitnavigate_start_key = "<space>"
 endif
-
-function! g:SplitnavigateLower()
-  call <SID>SelectLower()
-endfunction
-function! g:SplitnavigateUpper()
-  call <SID>SelectUpper()
-endfunction
+if ! exists("g:splitnavigate_up_key")
+  let g:splitnavigate_up_key = "k"
+endif
+if ! exists("g:splitnavigate_down_key")
+  let g:splitnavigate_down_key = "j"
+endif
+if ! exists("g:splitnavigate_abort_key")
+  let g:splitnavigate_abort_key = "<Esc>"
+endif
 
 function! s:SelectLower()
   let middle = <SID>GetMiddle()
@@ -23,9 +25,9 @@ function! s:SelectUpper()
 endfunction
 
 function! s:SetupSeekBindings()
-  map <buffer> <silent> j :call <SID>SelectLower()<CR>
-  map <buffer> <silent> k :call <SID>SelectUpper()<CR>
-  map <buffer> <silent> <Esc> :call <SID>AbortSearch()<CR>
+  execute "map <buffer> <silent> ". g:splitnavigate_down_key  ." :call <SID>SelectLower()<CR>"
+  execute "map <buffer> <silent> ". g:splitnavigate_up_key    ." :call <SID>SelectUpper()<CR>"
+  execute "map <buffer> <silent> ". g:splitnavigate_abort_key ." :call <SID>AbortSearch()<CR>"
 endfunction
 
 function! s:AbortSearch()
@@ -82,14 +84,10 @@ function! BinarySeek()
   call <SID>Refresh()
 endfunction
 
-if g:splitnavigate_default_mappings
-  try
-    unmap <Space>
-  catch
-  endtry
 
-  nnoremap <silent> <Space> :call BinarySeek()<CR>
-endif
+execute "try | unmap ". g:splitnavigate_start_key . " | catch | endtry"
+
+execute "nnoremap <silent> ". g:splitnavigate_start_key ." :call BinarySeek()<CR>"
 
 highlight default TopHighlight term=bold ctermfg=252 ctermbg=18 guifg=fg guibg=#000080
 highlight default BottomHighlight term=standout ctermfg=186 ctermbg=88 guifg=#d0d090 guibg=#800000
