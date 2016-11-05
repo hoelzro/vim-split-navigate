@@ -25,19 +25,21 @@ endfunction
 function! s:SetupSeekBindings()
   map <buffer> <silent> j :call <SID>SelectLower()<CR>
   map <buffer> <silent> k :call <SID>SelectUpper()<CR>
-  map <buffer> <silent> <Esc> :call <SID>ResetSeekBindings()<CR>
+  map <buffer> <silent> <Esc> :call <SID>AbortSearch()<CR>
 endfunction
 
-function! s:ResetSeekBindings()
+function! s:AbortSearch()
   call matchdelete(b:binary_matches[0])
   call matchdelete(b:binary_matches[1])
   unlet b:binary_matches
 
-  if g:splitnavigate_default_mappings
-    unmap <buffer> j
-    unmap <buffer> k
-    unmap <buffer> <Esc>
-  endif
+  call <SID>ResetSeekBindings()
+endfunction
+
+function! s:ResetSeekBindings()
+  execute "unmap <buffer>" . g:splitnavigate_up_key
+  execute "unmap <buffer>" . g:splitnavigate_down_key
+  execute "unmap <buffer>" . g:splitnavigate_abort_key
 endfunction
 
 function! s:GetMiddle()
@@ -51,7 +53,7 @@ endfunction
 function! s:Refresh()
   if b:binary_top == b:binary_bottom
     call cursor(b:binary_top, 1)
-    call <SID>ResetSeekBindings()
+    call <SID>AbortSearch()
 
     return
   endif
