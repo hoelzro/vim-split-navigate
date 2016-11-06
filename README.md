@@ -29,6 +29,27 @@ pressing `j`/`k` until you're reached the line you want.
 
 You can press `Escape` at any time to cancel split navigation.
 
+# Changing key bindings
+
+The default keys (`<Space>` for start, `k` for up, `j` for down and `<Esc>` for abort) can be overridden on a per-key basis.
+
+The keybindings for up, down and abort are only mapped while search is active (buffer-local). These are `unmap`ped when search is aborted
+
+Any `{lhs}` should be valid. (see `:help map-which-keys`, though this was not thoroughly tested)
+
+You can use the following example to get started:
+```vimL
+
+" start search with `leader+s`
+let g:splitnavigate_start_key = "<leader>s"
+" choose upper half with `u`
+let g:splitnavigate_up_key = "u"
+" choose lower half with `d`
+let g:splitnavigate_down_key = "d"
+" stop searching with `q`
+let g:splitnavigate_abort_key = "q"
+```
+
 # Custom Highlight Colors
 
 These are the default colors used:
@@ -53,4 +74,3 @@ Here are some of the compromises I made while writing this plugin; I will addres
 them in the future if it takes off.
 
   - This plugin doesn't currently play well with folds.  It *can*, but it would take some effort and I want to make sure it's useful before I add that.
-  - The keybindings (Space, j, k) are hardcoded.  I tend to dislike it when plugins choose keybindings for me, but this will at least allow users to quickly and easily try the plugin.

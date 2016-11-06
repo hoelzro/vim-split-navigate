@@ -1,3 +1,17 @@
+" set default values if unset
+if ! exists("g:splitnavigate_start_key")
+  let g:splitnavigate_start_key = "<space>"
+endif
+if ! exists("g:splitnavigate_up_key")
+  let g:splitnavigate_up_key = "k"
+endif
+if ! exists("g:splitnavigate_down_key")
+  let g:splitnavigate_down_key = "j"
+endif
+if ! exists("g:splitnavigate_abort_key")
+  let g:splitnavigate_abort_key = "<Esc>"
+endif
+
 function! s:SelectLower()
   let middle = <SID>GetMiddle()
   let b:binary_top = middle + 1
@@ -11,19 +25,23 @@ function! s:SelectUpper()
 endfunction
 
 function! s:SetupSeekBindings()
-  map <buffer> <silent> j :call <SID>SelectLower()<CR>
-  map <buffer> <silent> k :call <SID>SelectUpper()<CR>
-  map <buffer> <silent> <Esc> :call <SID>ResetSeekBindings()<CR>
+  execute "map <buffer> <silent> ". g:splitnavigate_down_key  ." :call <SID>SelectLower()<CR>"
+  execute "map <buffer> <silent> ". g:splitnavigate_up_key    ." :call <SID>SelectUpper()<CR>"
+  execute "map <buffer> <silent> ". g:splitnavigate_abort_key ." :call <SID>AbortSearch()<CR>"
 endfunction
 
-function! s:ResetSeekBindings()
+function! s:AbortSearch()
   call matchdelete(b:binary_matches[0])
   call matchdelete(b:binary_matches[1])
   unlet b:binary_matches
 
-  unmap <buffer> j
-  unmap <buffer> k
-  unmap <buffer> <Esc>
+  call <SID>ResetSeekBindings()
+endfunction
+
+function! s:ResetSeekBindings()
+  execute "unmap <buffer>" . g:splitnavigate_up_key
+  execute "unmap <buffer>" . g:splitnavigate_down_key
+  execute "unmap <buffer>" . g:splitnavigate_abort_key
 endfunction
 
 function! s:GetMiddle()
@@ -37,7 +55,7 @@ endfunction
 function! s:Refresh()
   if b:binary_top == b:binary_bottom
     call cursor(b:binary_top, 1)
-    call <SID>ResetSeekBindings()
+    call <SID>AbortSearch()
 
     return
   endif
@@ -66,17 +84,13 @@ function! BinarySeek()
   call <SID>Refresh()
 endfunction
 
-try
-  unmap <Space>
-catch
-endtry
 
-nnoremap <silent> <Space> :call BinarySeek()<CR>
+execute "try | unmap ". g:splitnavigate_start_key . " | catch | endtry"
+
+execute "nnoremap <silent> ". g:splitnavigate_start_key ." :call BinarySeek()<CR>"
 
 highlight default TopHighlight term=bold ctermfg=252 ctermbg=18 guifg=fg guibg=#000080
 highlight default BottomHighlight term=standout ctermfg=186 ctermbg=88 guifg=#d0d090 guibg=#800000
 
 " XXX Caveats:
 "   - Doesn't really work with folds
-"   - Uses <Space>/j/k
-"   - colors are hardcoded
