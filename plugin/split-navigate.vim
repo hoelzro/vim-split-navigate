@@ -60,7 +60,12 @@ function! s:Refresh()
     return
   endif
 
-  let middle = <SID>GetMiddle()
+  if has_key(b:, 'binary_middle')
+    let middle = b:binary_middle
+    unlet b:binary_middle
+  else
+    let middle = <SID>GetMiddle()
+  endif
   call cursor(middle, 1)
 
   let match_top    = <SID>HighlightLinesBetween(b:binary_top, middle)
@@ -80,6 +85,7 @@ function! BinarySeek()
   let current_line = line('.')
   let b:binary_top = current_line - winline() + 1
   let b:binary_bottom = min([b:binary_top + winheight(0) - 1, line('$')])
+  let b:binary_middle = <SID>GetMiddle()
 
   call <SID>SetupSeekBindings()
   call <SID>Refresh()
