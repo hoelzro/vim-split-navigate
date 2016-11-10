@@ -61,6 +61,7 @@ function! s:Refresh()
   endif
 
   let middle = <SID>GetMiddle()
+  call cursor(middle, 1)
 
   let match_top    = <SID>HighlightLinesBetween(b:binary_top, middle)
   let match_bottom = <SID>HighlightLinesBetween(middle + 1, b:binary_bottom)
