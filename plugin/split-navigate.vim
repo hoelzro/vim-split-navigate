@@ -85,7 +85,9 @@ function! BinarySeek()
   let current_line = line('.')
   let b:binary_top = current_line - winline() + 1
   let b:binary_bottom = min([b:binary_top + winheight(0) - 1, line('$')])
-  let b:binary_middle = <SID>GetMiddle()
+  if get(g:, 'splitnavigate_start_current', 0)
+    let b:binary_middle = current_line
+  endif
 
   call <SID>SetupSeekBindings()
   call <SID>Refresh()
